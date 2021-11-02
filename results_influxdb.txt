@@ -1,0 +1,6 @@
+FluxTable() columns: 9, records: 1
+{'result': '_result', 'table': 0, '_start': datetime.datetime(2021, 11, 2, 22, 38, 59, 542575, tzinfo=datetime.timezone.utc), '_stop': datetime.datetime(2021, 11, 2, 22, 48, 59, 542575, tzinfo=datetime.timezone.utc), '_time': datetime.datetime(2021, 11, 2, 22, 48, 59, 504000, tzinfo=datetime.timezone.utc), '_value': 60, '_field': 'humidity', '_measurement': 'sensor_reading', 'location': 'Czestochowa'}
+FluxTable() columns: 9, records: 1
+{'result': '_result', 'table': 1, '_start': datetime.datetime(2021, 11, 2, 22, 38, 59, 542575, tzinfo=datetime.timezone.utc), '_stop': datetime.datetime(2021, 11, 2, 22, 48, 59, 542575, tzinfo=datetime.timezone.utc), '_time': datetime.datetime(2021, 11, 2, 22, 48, 59, 504000, tzinfo=datetime.timezone.utc), '_value': 30, '_field': 'pollution', '_measurement': 'sensor_reading', 'location': 'Czestochowa'}
+FluxTable() columns: 9, records: 1
+{'result': '_result', 'table': 2, '_start': datetime.datetime(2021, 11, 2, 22, 38, 59, 542575, tzinfo=datetime.timezone.utc), '_stop': datetime.datetime(2021, 11, 2, 22, 48, 59, 542575, tzinfo=datetime.timezone.utc), '_time': datetime.datetime(2021, 11, 2, 22, 48, 59, 504000, tzinfo=datetime.timezone.utc), '_value': 1000000.3, '_field': 'temperature', '_measurement': 'sensor_reading', 'location': 'Czestochowa'}
