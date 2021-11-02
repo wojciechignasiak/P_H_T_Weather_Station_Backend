@@ -11,11 +11,19 @@ services:
   influxdb:
     image: influxdb:latest
     volumes:
-      # Mount for influxdb data directory and configuration
       - influxdb2:/.influxdb2
     ports:
       - "8086:8086"
-  # Use the influx cli to set up an influxdb instance.
-
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin1234
+      DOCKER_INFLUXDB_INIT_ORG: pht
+      DOCKER_INFLUXDB_INIT_BUCKET: phtbucket
+  mqtt:
+    image: fstehle/rpi-mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
 volumes:
   influxdb2:
