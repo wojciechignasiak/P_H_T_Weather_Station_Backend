@@ -20,10 +20,22 @@ services:
       DOCKER_INFLUXDB_INIT_PASSWORD: admin1234
       DOCKER_INFLUXDB_INIT_ORG: pht
       DOCKER_INFLUXDB_INIT_BUCKET: phtbucket
+
   mqtt:
     image: fstehle/rpi-mosquitto
     restart: always
     ports:
       - "1883:1883"
+
+  mqtt-bridge:
+    image: reap/mqtt-influxdb-bridge
+    environment:
+      BROKER: tcp://192.168.80.3:1883
+      DB: http://192.168.80.4:8086
+
+    depends_on:
+      - mqtt
+      - influxdb
+
 volumes:
   influxdb2:

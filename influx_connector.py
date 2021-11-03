@@ -1,7 +1,7 @@
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
-mytoken = 'MvDHUN7TnU3-vdsdBDvLDnTRPmVdz6DewHXGCEqAnAjT-PnH13dhpmf2jqD4Ifo2UVVh_O4rEwtOV7mvg-Xz_A=='
+mytoken = 'qpV8eWpyoCcNfH5azEfw0nGILXe328zDfvONjbue-rWeGS0b8VBgSK4SM9vvzsXcgQkDYx42j-5Y5d6T2utG6g=='
 client = InfluxDBClient(url="http://localhost:8086", token=mytoken, org="pht")
 bucket = 'phtbucket'
 
