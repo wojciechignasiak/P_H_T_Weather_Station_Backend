@@ -14,16 +14,17 @@ base = declarative_base()
 
 class Cities(base):
     __tablename__ = 'Cities'
-    city_id = Column(Integer, unique=True, primary_key=True)
+    id = Column(Integer, unique=True, primary_key=True)
     city_name = Column(String)
-    city_sensors_list = Column(ARRAY(Integer))
+    city_sensors = relationship("Sensors")
 
 
 class Sensors(base):
     __tablename__ = 'Sensors'
-    sensor_id = Column(Integer, unique=True, primary_key=True)
+    id = Column(Integer, unique=True, primary_key=True)
     sensor_name = Column(String)
     sensor_unit = Column(String)
+    city_id = Column(Integer, ForeignKey('Cities.id'))
 
 
 Session = sessionmaker(db)
@@ -31,47 +32,65 @@ session = Session()
 
 base.metadata.create_all(db)
 
-temperature_sensor = Sensors(sensor_id=0,
-                             sensor_name="temperature",
-                             sensor_unit="Celsius")
+czestochowa_city = Cities(city_name="Czestochowa")
 
-humidity_sensor = Sensors(sensor_id=1,
-                          sensor_name="humidity",
-                          sensor_unit="precentage")
+myszkow_city = Cities(city_name="Myszkow")
 
-pollution_sensor = Sensors(sensor_id=2,
-                           sensor_name="pollution",
-                           sensor_unit="PM2.5")
-
-session.add(temperature_sensor)
-session.add(humidity_sensor)
-session.add(pollution_sensor)
-session.commit()
-
-czestochowa_city = Cities(city_id=0,
-                          city_name="Czestochowa",
-                          city_sensors_list=[
-                              temperature_sensor.sensor_id,
-                              humidity_sensor.sensor_id,
-                              pollution_sensor.sensor_id
-                          ])
-
-myszkow_city = Cities(city_id=1,
-                      city_name="Myszkow",
-                      city_sensors_list=[
-                          temperature_sensor.sensor_id,
-                          humidity_sensor.sensor_id, pollution_sensor.sensor_id
-                      ])
-
-krzepice_city = Cities(city_id=2,
-                       city_name="Krzepice",
-                       city_sensors_list=[
-                           temperature_sensor.sensor_id,
-                           humidity_sensor.sensor_id,
-                           pollution_sensor.sensor_id
-                       ])
+krzepice_city = Cities(city_name="Krzepice")
 
 session.add(czestochowa_city)
 session.add(myszkow_city)
 session.add(krzepice_city)
+session.commit()
+
+
+temperature_sensor1 = Sensors(sensor_name="temperature",
+                              sensor_unit="Celsius",
+                              city_id=1)
+
+humidity_sensor1 = Sensors(sensor_name="humidity",
+                           sensor_unit="precentage",
+                           city_id=1)
+
+pollution_sensor1 = Sensors(sensor_name="pollution",
+                            sensor_unit="PM2.5",
+                            city_id=1)
+
+temperature_sensor2 = Sensors(sensor_name="temperature",
+                              sensor_unit="Celsius",
+                              city_id=2)
+
+humidity_sensor2 = Sensors(sensor_name="humidity",
+                           sensor_unit="precentage",
+                           city_id=2)
+
+pollution_sensor2 = Sensors(sensor_name="pollution",
+                            sensor_unit="PM2.5",
+                            city_id=2)
+
+temperature_sensor3 = Sensors(sensor_name="temperature",
+                              sensor_unit="Celsius",
+                              city_id=3)
+
+humidity_sensor3 = Sensors(sensor_name="humidity",
+                           sensor_unit="precentage",
+                           city_id=3)
+
+pollution_sensor3 = Sensors(sensor_name="pollution",
+                            sensor_unit="PM2.5",
+                            city_id=3)
+
+
+session.add(temperature_sensor1)
+session.add(humidity_sensor1)
+session.add(pollution_sensor1)
+
+session.add(temperature_sensor2)
+session.add(humidity_sensor2)
+session.add(pollution_sensor2)
+
+session.add(temperature_sensor3)
+session.add(humidity_sensor3)
+session.add(pollution_sensor3)
+
 session.commit()
