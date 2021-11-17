@@ -11,4 +11,4 @@ def on_publish(client, userdata, result):
 client1 = paho.Client("control1")
 client1.on_publish = on_publish
 client1.connect(broker, port)
-ret = client1.publish("pht/czestochowa/temperature", "30")
+ret = client1.publish("pht/wroclaw/temperature", "20")

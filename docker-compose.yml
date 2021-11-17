@@ -1,4 +1,10 @@
 version: "3.9"
+
+networks:
+  pht:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
 services:
   db:
     image: postgres:14.0
@@ -7,6 +13,9 @@ services:
       POSTGRES_PASSWORD: 1234
     ports:
       - "5438:5432"
+    networks:
+      pht:
+        ipv4_address: 172.18.0.2
 
   influxdb:
     image: influxdb:latest
@@ -14,28 +23,47 @@ services:
       - influxdb2:/.influxdb2
     ports:
       - "8086:8086"
+    # expose:
+    #   - "8086"
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: admin
       DOCKER_INFLUXDB_INIT_PASSWORD: admin1234
       DOCKER_INFLUXDB_INIT_ORG: pht
       DOCKER_INFLUXDB_INIT_BUCKET: phtbucket
+    networks:
+      pht:
+        ipv4_address: 172.18.0.4
 
   mqtt:
     image: fstehle/rpi-mosquitto
     restart: always
     ports:
       - "1883:1883"
+    expose:
+      - "1883"
+    networks:
+      pht:
+        ipv4_address: 172.18.0.3
 
   mqtt-bridge:
-    image: reap/mqtt-influxdb-bridge
+    build: ./mqtt_bridge
+    command: python /src/run.py
+    volumes:
+      - "./mqtt_bridge/src:/src"
+    # restart: always
     environment:
-      BROKER: tcp://192.168.80.3:1883
-      DB: http://192.168.80.4:8086
-
+      BROKER: 172.18.0.3
+      DB: 172.18.0.4
+      TOKEN: dFLKvAHVldy2bAYXhOT_E6CXbD-keHJBXSu_JoxrdJIES26E6J0V0Y2UUvmgmQ81rSA-yB4-Vg1GkkSpLGSb1w==
+      BUCKET_NAME: phtbucket
+      ORG: pht
     depends_on:
       - mqtt
       - influxdb
+    networks:
+      pht:
+        ipv4_address: 172.18.0.5
 
 volumes:
   influxdb2:
