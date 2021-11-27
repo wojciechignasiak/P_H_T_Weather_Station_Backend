@@ -7,7 +7,7 @@ app = FastAPI()
 
 @app.get("/cities")
 def get_cities():
-    results = pc.get_cities()
+    results = pc.get_city()
     city_list = []
     for result in results:
         sensor_list = []

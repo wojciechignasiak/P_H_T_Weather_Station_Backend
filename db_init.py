@@ -1,80 +1,47 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, session
 from sqlalchemy.orm.session import Session
-from models import Cities, Sensors
-from sqlalchemy.ext.declarative import declarative_base
+from models import City, Sensor, base
+
 
 db_string = "postgresql://postgres:1234@localhost:5438"
 
 db = create_engine(db_string)
-base = declarative_base()
 
 Session = sessionmaker(db)
 session = Session()
 
 base.metadata.create_all(db)
 
-czestochowa_city = Cities(city_name="Czestochowa")
+czestochowa_city = City(name="Czestochowa")
 
-myszkow_city = Cities(city_name="Myszkow")
+myszkow_city = City(name="Myszkow")
 
-krzepice_city = Cities(city_name="Krzepice")
+krzepice_city = City(name="Krzepice")
+
+temperature_sensor = Sensor(name="temperature",
+                            unit="Celsius")
+
+humidity_sensor = Sensor(name="humidity",
+                         unit="precentage")
+
+pollution_sensor = Sensor(name="pollution",
+                          unit="PM2.5")
+
+czestochowa_city.sensors = [temperature_sensor,
+                            humidity_sensor, pollution_sensor]
+myszkow_city.sensors = [temperature_sensor,
+                        humidity_sensor, pollution_sensor]
+krzepice_city.sensors = [temperature_sensor,
+                         humidity_sensor, pollution_sensor]
+
 
 session.add(czestochowa_city)
 session.add(myszkow_city)
 session.add(krzepice_city)
-session.commit()
+session.add(temperature_sensor)
+session.add(humidity_sensor)
+session.add(pollution_sensor)
 
-
-temperature_sensor1 = Sensors(sensor_name="temperature",
-                              sensor_unit="Celsius",
-                              city_id=czestochowa_city.id)
-
-humidity_sensor1 = Sensors(sensor_name="humidity",
-                           sensor_unit="precentage",
-                           city_id=czestochowa_city.id)
-
-pollution_sensor1 = Sensors(sensor_name="pollution",
-                            sensor_unit="PM2.5",
-                            city_id=czestochowa_city.id)
-
-
-temperature_sensor2 = Sensors(sensor_name="temperature",
-                              sensor_unit="Celsius",
-                              city_id=2)
-
-humidity_sensor2 = Sensors(sensor_name="humidity",
-                           sensor_unit="precentage",
-                           city_id=2)
-
-pollution_sensor2 = Sensors(sensor_name="pollution",
-                            sensor_unit="PM2.5",
-                            city_id=2)
-
-
-temperature_sensor3 = Sensors(sensor_name="temperature",
-                              sensor_unit="Celsius",
-                              city_id=3)
-
-humidity_sensor3 = Sensors(sensor_name="humidity",
-                           sensor_unit="precentage",
-                           city_id=3)
-
-pollution_sensor3 = Sensors(sensor_name="pollution",
-                            sensor_unit="PM2.5",
-                            city_id=3)
-
-
-session.add(temperature_sensor1)
-session.add(humidity_sensor1)
-session.add(pollution_sensor1)
-
-session.add(temperature_sensor2)
-session.add(humidity_sensor2)
-session.add(pollution_sensor2)
-
-session.add(temperature_sensor3)
-session.add(humidity_sensor3)
-session.add(pollution_sensor3)
 
 session.commit()

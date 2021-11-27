@@ -1,5 +1,5 @@
 from sqlalchemy.engine import create_engine
-from models import Cities, Sensors
+from models import City, Sensor
 from sqlalchemy.orm import sessionmaker
 
 
@@ -19,16 +19,16 @@ class PostgresConnector:
         self.Session = sessionmaker(bind=self._engine)
         self._session = self.Session()
 
-    def get_cities(self):
-        cities = self._session.query(Cities).all()
-        return cities
+    def get_city(self):
+        city = self._session.query(City).all()
+        return city
 
-    def get_sensors(self):
-        sensors = None
+    def get_sensor(self):
+        sensor = None
         with self.Session() as session:
             with session.begin():
-                sensors = session.query(Sensors).all()
-        return sensors
+                sensor = session.query(Sensor).all()
+        return sensor
 
 
 # records = session.query(Cities).all()

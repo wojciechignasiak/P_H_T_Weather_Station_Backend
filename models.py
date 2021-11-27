@@ -1,21 +1,28 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Table
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy.sql.schema import ForeignKey
 
 base = declarative_base()
 
+city_m2m_sensor = Table('city_m2m_sensor', base.metadata,
+                        Column('id', Integer, unique=True, primary_key=True),
+                        Column('cities_id', Integer, ForeignKey('Cities.id')),
+                        Column('sensors_id', Integer,
+                               ForeignKey('Sensors.id')),
+                        )
 
-class Cities(base):
+
+class City(base):
     __tablename__ = 'Cities'
     id = Column(Integer, unique=True, primary_key=True)
-    city_name = Column(String)
-    city_sensors = relationship("Sensors")
+    name = Column(String)
+    sensors = relationship(
+        'Sensor', secondary=city_m2m_sensor, backref=backref('Cities'))
 
 
-class Sensors(base):
+class Sensor(base):
     __tablename__ = 'Sensors'
     id = Column(Integer, unique=True, primary_key=True)
-    sensor_name = Column(String)
-    sensor_unit = Column(String)
-    city_id = Column(Integer, ForeignKey('Cities.id'))
+    name = Column(String)
+    unit = Column(String)
