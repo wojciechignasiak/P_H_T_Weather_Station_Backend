@@ -6,7 +6,6 @@ from sqlalchemy.sql.schema import ForeignKey
 base = declarative_base()
 
 city_m2m_sensor = Table('city_m2m_sensor', base.metadata,
-                        Column('id', Integer, unique=True, primary_key=True),
                         Column('cities_id', Integer, ForeignKey('Cities.id')),
                         Column('sensors_id', Integer,
                                ForeignKey('Sensors.id')),

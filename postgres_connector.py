@@ -19,16 +19,13 @@ class PostgresConnector:
         self.Session = sessionmaker(bind=self._engine)
         self._session = self.Session()
 
-    def get_city(self):
-        city = self._session.query(City).all()
-        return city
+    def get_cities(self):
+        cities = self._session.query(City).all()
+        return cities
 
-    def get_sensor(self):
-        sensor = None
-        with self.Session() as session:
-            with session.begin():
-                sensor = session.query(Sensor).all()
-        return sensor
+    def get_sensors(self):
+        sensors = self._session.query(Sensor).all()
+        return sensors
 
 
 # records = session.query(Cities).all()
