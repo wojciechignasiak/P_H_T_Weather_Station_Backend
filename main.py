@@ -60,7 +60,6 @@ def get_exact_sensor(city_id: int, sensor_id: int):
     pc = PostgresConnector("postgres", "1234", "localhost")
     pc.connect()
     cities = pc.get_cities()
-    s = pc.get_sensors()
     city = next((x for x in cities if x.id == city_id), None)
     readings = {}
     for sensor in city.sensors:
