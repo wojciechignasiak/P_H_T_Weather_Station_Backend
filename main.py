@@ -47,14 +47,30 @@ def get_city_readings(city_id: int):
     pc = PostgresConnector("postgres", "1234", "localhost")
     pc.connect()
     cities = pc.get_cities()
-    xd = next((x for x in cities if x.id == city_id), None)
+    city = next((x for x in cities if x.id == city_id), None)
     readings = {}
-    for sensor in xd.sensors:
-        readings[sensor.name] = "chuj"
+    for sensor in city.sensors:
+        readings[sensor.name] = "chujowo"
+
+    return readings
+
+
+@app.get("/readings/{city_id}/{sensor_id}")
+def get_exact_sensor(city_id: int, sensor_id: int):
+    pc = PostgresConnector("postgres", "1234", "localhost")
+    pc.connect()
+    cities = pc.get_cities()
+    s = pc.get_sensors()
+    city = next((x for x in cities if x.id == city_id), None)
+    readings = {}
+    for sensor in city.sensors:
+        if sensor.id == sensor_id:
+            readings[sensor.name] = "chujowo"
 
     return readings
 
 
 if __name__ == "__main__":
-
+    pc = PostgresConnector("postgres", "1234", "localhost")
+    pc.connect()
     uvicorn.run(app, host="0.0.0.0", port=8000)
