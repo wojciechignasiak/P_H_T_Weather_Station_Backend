@@ -1,5 +1,5 @@
 from sqlalchemy.engine import create_engine
-from models import City, Sensor
+from db_connector.models import City, Sensor
 from sqlalchemy.orm import sessionmaker
 
 
@@ -26,9 +26,3 @@ class PostgresConnector:
     def get_sensors(self):
         sensors = self._session.query(Sensor).all()
         return sensors
-
-
-# records = session.query(Cities).all()
-
-# for record in records:
-#     print(record)

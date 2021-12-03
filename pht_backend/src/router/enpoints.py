@@ -1,14 +1,16 @@
-import uvicorn
-from fastapi import FastAPI, Path
-from postgres_connector import PostgresConnector
-
-app = FastAPI()
+from fastapi import APIRouter
+from db_connector.postgres_connector import PostgresConnector
+from influx_connector.influx_connector import InfluxConnector
 
 
-@app.get("/cities")
+router = APIRouter()
+pc = PostgresConnector("postgres", "1234", "localhost")
+pc.connect()
+ic = InfluxConnector()
+
+
+@router.get("/cities")
 def get_cities():
-    pc = PostgresConnector("postgres", "1234", "localhost")
-    pc.connect()
     results = pc.get_cities()
     city_list = []
     for result in results:
@@ -25,10 +27,8 @@ def get_cities():
     return city_list
 
 
-@app.get("/sensors")
+@router.get("/sensors")
 def get_sensors():
-    pc = PostgresConnector("postgres", "1234", "localhost")
-    pc.connect()
     results = pc.get_sensors()
     sensor_list = []
     for result in results:
@@ -42,34 +42,25 @@ def get_sensors():
     return sensor_list
 
 
-@app.get("/readings/{city_id}")
+@router.get("/readings/{city_id}")
 def get_city_readings(city_id: int):
-    pc = PostgresConnector("postgres", "1234", "localhost")
-    pc.connect()
     cities = pc.get_cities()
     city = next((x for x in cities if x.id == city_id), None)
     readings = {}
     for sensor in city.sensors:
-        readings[sensor.name] = "chujowo"
+        readings[sensor.name] = "chuj"
 
     return readings
 
 
-@app.get("/readings/{city_id}/{sensor_id}")
+@router.get("/readings/{city_id}/{sensor_id}")
 def get_exact_sensor(city_id: int, sensor_id: int):
-    pc = PostgresConnector("postgres", "1234", "localhost")
-    pc.connect()
     cities = pc.get_cities()
     city = next((x for x in cities if x.id == city_id), None)
     readings = {}
     for sensor in city.sensors:
         if sensor.id == sensor_id:
+
             readings[sensor.name] = "chujowo"
 
     return readings
-
-
-if __name__ == "__main__":
-    pc = PostgresConnector("postgres", "1234", "localhost")
-    pc.connect()
-    uvicorn.run(app, host="0.0.0.0", port=8000)

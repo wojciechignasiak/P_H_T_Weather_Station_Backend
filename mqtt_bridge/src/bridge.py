@@ -1,4 +1,4 @@
-from influx_connector import InfluxConnector
+from pht_backend.src.influx_connector.influx_connector import InfluxConnector
 import paho.mqtt.client as mqtt
 import os
 
