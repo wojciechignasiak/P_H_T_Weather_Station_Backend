@@ -65,5 +65,24 @@ services:
       pht:
         ipv4_address: 172.18.0.5
 
+  core_api:
+        build: ./pht_backend
+        container_name: "core-api-container"
+        depends_on:
+          - influxdb
+        ports: 
+            - "8000:15400"
+        volumes:
+          - "./pht_backend/src:/src"
+        environment:
+          BROKER: 172.18.0.3
+          DB: 172.18.0.4
+          TOKEN: dFLKvAHVldy2bAYXhOT_E6CXbD-keHJBXSu_JoxrdJIES26E6J0V0Y2UUvmgmQ81rSA-yB4-Vg1GkkSpLGSb1w==
+          BUCKET_NAME: phtbucket
+          ORG: pht
+        networks:
+          pht:
+            ipv4_address: 172.18.0.8
+        
 volumes:
   influxdb2:

@@ -4,9 +4,9 @@ from influx_connector.influx_connector import InfluxConnector
 
 
 router = APIRouter()
-pc = PostgresConnector("postgres", "1234", "localhost")
+pc = PostgresConnector("postgres", "1234", "0.0.0.0")
 pc.connect()
-ic = InfluxConnector()
+# ic = InfluxConnector()
 
 
 @router.get("/cities")
@@ -48,7 +48,7 @@ def get_city_readings(city_id: int):
     city = next((x for x in cities if x.id == city_id), None)
     readings = {}
     for sensor in city.sensors:
-        readings[sensor.name] = "chuj"
+        readings[sensor.name] = "kotek"
 
     return readings
 
@@ -56,11 +56,13 @@ def get_city_readings(city_id: int):
 @router.get("/readings/{city_id}/{sensor_id}")
 def get_exact_sensor(city_id: int, sensor_id: int):
     cities = pc.get_cities()
+    # sensor_readings = ic.get_data(city_id, sensor_id)
+    # print(sensor_readings)
     city = next((x for x in cities if x.id == city_id), None)
     readings = {}
     for sensor in city.sensors:
         if sensor.id == sensor_id:
 
-            readings[sensor.name] = "chujowo"
+            readings[sensor.name] = "sensor_readings"
 
     return readings

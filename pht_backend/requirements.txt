@@ -1,3 +1,6 @@
 uvicorn
 fastapi
 sqlalchemy
+influxdb
+influxdb-client
+psycopg2
