@@ -8,13 +8,16 @@ def on_publish(client, userdata, result):
     pass
 
 
-city_id = 1
-sensor_id = 1
+city_id = 3
+sensor_id = 2
 
 client1 = paho.Client("control1")
 client1.on_publish = on_publish
 client1.connect(broker, port)
-ret = client1.publish(f"pht/city/{city_id}/sensor/{sensor_id}", 8)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{1}", 4)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{2}", 5)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{3}", 6)
+
 # ret1 = client1.publish("pht/Czestochowa/humidity", 60.1)
 # ret2 = client1.publish("pht/Czestochowa/pollution", 17.8)
 # ret3 = client1.publish("pht/Myszkow/temperature", 7.1)

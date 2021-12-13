@@ -20,6 +20,6 @@ class InfluxConnector:
         print(topic_data)
         payload_data = payload.decode()
         print(payload_data)
-        p = Point(topic_data[3]).tag(
-            topic_data[1], topic_data[2]).field(topic_data[4], payload_data)
+        p = Point(topic_data[1]).tag(
+            topic_data[3], topic_data[4]).field(topic_data[2], payload_data)
         self._write_api.write(bucket=self._bucket, record=p)

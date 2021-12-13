@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 class PostgresConnector:
-    def __init__(self, user, password, url, port=5438) -> None:
+    def __init__(self, user, password, url, port=5432) -> None:
         self._user = user
         self._password = password
         self._url = url
@@ -18,6 +18,7 @@ class PostgresConnector:
         self._engine = create_engine(self._db_string)
         self.Session = sessionmaker(bind=self._engine)
         self._session = self.Session()
+        print("Postgres connected")
 
     def get_cities(self):
         cities = self._session.query(City).all()
