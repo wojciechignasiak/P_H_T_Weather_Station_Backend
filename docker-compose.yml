@@ -8,6 +8,7 @@ networks:
 services:
   db:
     image: postgres:14.0
+    container_name: "Postgres_DB"
     restart: always
     environment:
       POSTGRES_PASSWORD: 1234
@@ -19,6 +20,7 @@ services:
 
   influxdb:
     image: influxdb:latest
+    container_name: "InfluxDB"
     volumes:
       - influxdb2:/.influxdb2
     ports:
@@ -34,7 +36,8 @@ services:
         ipv4_address: 172.18.0.4
 
   mqtt:
-    image: fstehle/rpi-mosquitto
+    image: toke/mosquitto
+    container_name: "MQTT"
     restart: always
     ports:
       - "1883:1883"
@@ -46,6 +49,7 @@ services:
 
   mqtt-bridge:
     build: ./mqtt_bridge
+    container_name: "MQTT_Bridge"
     command: python /src/run.py
     volumes:
       - "./mqtt_bridge/src:/src"
@@ -64,7 +68,7 @@ services:
 
   core_api:
         build: ./pht_backend
-        container_name: "FastAPI"
+        container_name: "CoreAPI"
         depends_on:
           - influxdb
         ports: 

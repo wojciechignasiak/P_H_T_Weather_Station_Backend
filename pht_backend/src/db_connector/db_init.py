@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, session
 from sqlalchemy.orm.session import Session
-from pht_backend.models import City, Sensor, base  # TODO: fix this
+from models import City, Sensor, base
 
 
 db_string = "postgresql://postgres:1234@localhost:5438"
