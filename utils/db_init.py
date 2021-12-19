@@ -3,8 +3,8 @@ from sqlalchemy.orm import sessionmaker, session
 from sqlalchemy.orm.session import Session
 from models import City, Sensor, base
 
-
-db_string = "postgresql://postgres:1234@localhost:5438"
+print("Connecting to DB")
+db_string = "postgresql://postgres:1234@localhost:5432"
 
 db = create_engine(db_string)
 
@@ -13,12 +13,14 @@ session = Session()
 
 base.metadata.create_all(db)
 
+print("Preparing cities")
 czestochowa_city = City(name="Czestochowa")
 
 myszkow_city = City(name="Myszkow")
 
 krzepice_city = City(name="Krzepice")
 
+print("Adding sensors")
 temperature_sensor = Sensor(name="temperature",
                             unit="Celsius")
 
@@ -45,3 +47,4 @@ session.add(pollution_sensor)
 
 
 session.commit()
+print("Database structure created.")

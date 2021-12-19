@@ -21,6 +21,7 @@ services:
   influxdb:
     image: influxdb:latest
     container_name: "InfluxDB"
+    restart: always
     volumes:
       - influxdb2:/.influxdb2
     ports:
@@ -50,13 +51,14 @@ services:
   mqtt-bridge:
     build: ./mqtt_bridge
     container_name: "MQTT_Bridge"
+    restart: always
     command: python /src/run.py
     volumes:
       - "./mqtt_bridge/src:/src"
     environment:
       BROKER: 172.18.0.3
       DB: 172.18.0.4
-      TOKEN: dFLKvAHVldy2bAYXhOT_E6CXbD-keHJBXSu_JoxrdJIES26E6J0V0Y2UUvmgmQ81rSA-yB4-Vg1GkkSpLGSb1w==
+      TOKEN: ${INFLUX_TOKEN_ENV}
       BUCKET_NAME: phtbucket
       ORG: pht
     depends_on:
@@ -67,25 +69,26 @@ services:
         ipv4_address: 172.18.0.5
 
   core_api:
-        build: ./pht_backend
-        container_name: "CoreAPI"
-        depends_on:
-          - influxdb
-        ports: 
-            - "8000:8000"
-        volumes:
-          - "./pht_backend/src:/src"
-        environment:
-          POSTGRES_LOGIN: postgres
-          POSTGRES_PASSWORD: 1234
-          POSTGRES_URL: 172.18.0.2
-          INFLUX: 172.18.0.4
-          INFLUX_TOKEN: dFLKvAHVldy2bAYXhOT_E6CXbD-keHJBXSu_JoxrdJIES26E6J0V0Y2UUvmgmQ81rSA-yB4-Vg1GkkSpLGSb1w==
-          BUCKET_NAME: phtbucket
-          ORG: pht
-        networks:
-          pht:
-            ipv4_address: 172.18.0.6
-        
+    build: ./pht_backend
+    container_name: "CoreAPI"
+    restart: always
+    depends_on:
+      - influxdb
+      - db
+    ports: 
+        - "8000:8000"
+    volumes:
+      - "./pht_backend/src:/src"
+    environment:
+      POSTGRES_LOGIN: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_URL: 172.18.0.2
+      INFLUX: 172.18.0.4
+      INFLUX_TOKEN: ${INFLUX_TOKEN_ENV}
+      BUCKET_NAME: phtbucket
+      ORG: pht
+    networks:
+      pht:
+        ipv4_address: 172.18.0.6     
 volumes:
   influxdb2:
