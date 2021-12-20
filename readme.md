@@ -4,7 +4,9 @@
 
 <br>
 
-    PHT is a project created by group of students. The project goal was to create a Web Service that will measure temperature, air humidity and pollution in the cities of Częstochowa, Myszków and Krzepice located in Silesia in Poland.
+    PHT is a project created by group of students. The project goal was to create a Web Service that will measure
+    temperature, air humidity and pollution in the cities of Częstochowa, Myszków and Krzepice
+    located in Silesia in Poland.
 
 <br>
 
