@@ -39,3 +39,16 @@ class InfluxConnector:
             for record in table.records:
                 results.append(record.get_value())
         return results
+
+    def get_city_data_from_date(self, city_id, year, month, day, hour, minutes):
+        query = f' from(bucket: "phtbucket")\
+            |> range(start: {year}-{month}-{day}T{hour}:{minutes}:00Z, stop: {year}-{month}-{day}T{hour}:{minutes}:59Z)\
+            |> filter(fn: (r) => r["_measurement"] == "city")\
+            |> filter(fn: (r) => r["_field"] == "{city_id}")\
+            |> last()'
+        result = self._query_api.query(query=query)
+        results = []
+        for table in result:
+            for record in table.records:
+                results.append(record.get_value())
+        return results

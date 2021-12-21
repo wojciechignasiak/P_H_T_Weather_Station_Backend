@@ -102,3 +102,24 @@ def get_exact_sensor(city_id: int, sensor_id: int):
             "error_message": "Sensor or city does not exist"
         }
     return readings
+
+
+@router.get("/readings-date/{city_id}/{year}-{month}-{day}T{hour}:{minutes}:00Z")
+def get_city_readings_from_date(city_id: int, year: int, month: int, day: int, hour: int, minutes: int):
+    cities = pc.get_cities()
+    hour = hour - 1  # diferent time zone in InfluxDB
+    try:
+        city_readings = ic.get_city_data_from_date(
+            city_id, year, month, day, hour, minutes)
+        print(city_readings)
+        city = next((x for x in cities if x.id == city_id), None)
+        readings = {}
+        print(readings)
+        for i, sensor in enumerate(city.sensors):
+            readings[sensor.name] = city_readings[i]
+    except:
+        readings = {
+            "error_code": 4041,
+            "error_message": "City does not exist or date has been given in wrong format"
+        }
+    return readings

@@ -3,4 +3,4 @@ fastapi
 sqlalchemy
 influxdb
 influxdb-client
-psycopg2-binary
+psycopg2

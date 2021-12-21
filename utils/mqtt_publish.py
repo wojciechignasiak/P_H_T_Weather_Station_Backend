@@ -18,6 +18,15 @@ ret = client1.publish(f"pht/city/{city_id}/sensor/{1}", 4)
 ret = client1.publish(f"pht/city/{city_id}/sensor/{2}", 5)
 ret = client1.publish(f"pht/city/{city_id}/sensor/{3}", 6)
 
+city_id = 1
+ret = client1.publish(f"pht/city/{city_id}/sensor/{1}", 4)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{2}", 5)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{3}", 6)
+
+city_id = 2
+ret = client1.publish(f"pht/city/{city_id}/sensor/{1}", 4)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{2}", 5)
+ret = client1.publish(f"pht/city/{city_id}/sensor/{3}", 6)
 # ret1 = client1.publish("pht/Czestochowa/humidity", 60.1)
 # ret2 = client1.publish("pht/Czestochowa/pollution", 17.8)
 # ret3 = client1.publish("pht/Myszkow/temperature", 7.1)
