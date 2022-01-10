@@ -10,7 +10,24 @@
 
 <br>
 
-## **Setup**
+## **Setup - M1 Mac ![Apple Icon](readme_images/appleicon.png)**
+
+    1. Install:
+
+        Docker
+        Docker-compose
+
+    2. Open P_H_T_Project_Backend/pht_backend folder.
+    3. Open requirements.txt file and replace "psycopg2-binary" to just "psycopg2" and save changes.
+    2. Start Terminal.
+    3. Get to P_H_T_Project_Backend folder.
+    4. Start command:
+
+        ./build.sh
+
+    5. Done
+
+## **Setup - Linux Ubuntu ![Linux Icon](readme_images/Linuxicon.png)**
 
     1. Install:
 
@@ -21,7 +38,7 @@
     3. Get to P_H_T_Project_Backend folder.
     4. Start command:
 
-        sudo ./build.sh
+        sudo ./build-linux.sh
 
     5. Done
 
@@ -228,3 +245,37 @@ Example error response:
 ```
 
 <br><br>
+
+### **GET city readings from given date**
+
+Date format (iso8601): `YYYY-MM-DDThh:mm:ssZ`\
+Date example: `2021-10-22T00:09:00Z`
+
+Endpoint:
+
+```
+/readings-date/{city_id}/{year}-{month}-{day}T{hour}:{minutes}:00Z
+```
+
+Example request:
+
+**`http://178.43.161.159/readings-date/1/2021-10-22T00:09:00Z`**
+
+Example success response:
+
+```json
+{
+  "temperature": "20",
+  "humidity": "60",
+  "pollution": "10"
+}
+```
+
+Example error response:
+
+```json
+{
+  "error_code": "4043",
+  "error_message": "Given date does not exist in database"
+}
+```
