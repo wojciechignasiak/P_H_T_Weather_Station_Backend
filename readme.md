@@ -10,7 +10,7 @@
 
 <br>
 
-## **Setup - M1 Mac ![Apple Icon](readme_images/appleicon.png)**
+## **Setup - M1 Mac <img src="readme_images/appleicon.png" alt="Linux Icon" width="32"/>**
 
     1. Install:
 
@@ -27,7 +27,7 @@
 
     5. Done
 
-## **Setup - Linux Ubuntu ![Linux Icon](readme_images/Linuxicon.png)**
+## **Setup - Linux Ubuntu <img src="readme_images/linuxicon.png" alt="Linux Icon" width="32"/>**
 
     1. Install:
 
