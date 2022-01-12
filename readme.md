@@ -4,7 +4,7 @@
 
 <br>
 
-    PHT is a project created by group of students. The project goal was to create a Web Service that will measure
+    PHT is a project created by group of students. The project goal was to create a Service that will measure
     temperature, air humidity and pollution in the cities of Częstochowa, Myszków and Krzepice
     located in Silesia in Poland.
 
@@ -58,33 +58,52 @@
 
 <br>
 
-## **Technologies**
+## **How it works? - Backend**
 
 <br>
 
-### Docker-compose
+#### **Docker-compose**
+
+    Whole Backend layer has been built on Docker-compose containers technology:
+
+![Docker-compose](readme_images/dockercompose.png)
 
 <br>
 
-### FastAPI
+#### **MQTT Bridge**
+
+    MQTT Bridge caches data with structure "pht/city/{city_id}/sensor/{sensor_id}, "sensor_data""
+    send by electronic sensors on {ip_adress}:1883 adress. Then MQTT breake the structure into InfluxDB topics:
+
+![MQTT](readme_images/mqttbridges.png)
 
 <br>
 
-### MQTT Bridge
+#### **InfluxDB**
+
+    MQTT correctly transfers data and topics structure to InfluxDB and by Explore tab we can see collected data:
+
+![InfluxDB](readme_images/influxdb.png)
 
 <br>
 
-### MQTT Broker (docker image)
+#### **PostgreSQL**
 
-    toke/mosquitto
+    We use PostgreSQL to store the names of cities, sensors and units of measurement. In addition, we structure them by, for example, giving them identification numbers, which help us to provide endpoints. These endpoints only use PostgreSQL and show the adopted data organization.
 
-### PostgreSQL (docker image)
+![PostgreSQL1](readme_images/postgres1.png)
+![PostgreSQL2](readme_images/postgres2.png)
 
-    postgres:14.0
+<br>
 
-### InfluxDB >2.0 (docker image)
+#### **FastAPI**
 
-    influxdb:latest
+    We decided to use FastAPI due to its speed and lightness, which is perfect for our small project. In FastAPI we connect to PostgreSQL and InfluxDB to provide structured data in the form of endpoints. You can check all enpoints on {ip_adress}/docs.
+    Here is an example:
+
+![FastAPI](readme_images/fastAPI.png)
+
+<br>
 
 ## **Endpoint list:**
 
@@ -276,6 +295,6 @@ Example error response:
 ```json
 {
   "error_code": "4043",
-  "error_message": "Given date does not exist in database"
+  "error_message": "City does not exist or date has been given in wrong format"
 }
 ```
