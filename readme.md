@@ -75,7 +75,7 @@
     MQTT Bridge caches data with structure "pht/city/{city_id}/sensor/{sensor_id}, "sensor_data""
     send by electronic sensors on {ip_adress}:1883 adress. Then MQTT breake the structure into InfluxDB topics:
 
-![MQTT](readme_images/mqttbridges.png)
+![MQTT](readme_images/mqttbridge.png)
 
 <br>
 
@@ -89,16 +89,22 @@
 
 #### **PostgreSQL**
 
-    We use PostgreSQL to store the names of cities, sensors and units of measurement. In addition, we structure them by, for example, giving them identification numbers, which help us to provide endpoints. These endpoints only use PostgreSQL and show the adopted data organization.
+    We use PostgreSQL to store the names of cities, sensors and units of measurement.
+    In addition, we structure them by, for example, giving them identification numbers, which help us to provide endpoints.
+    These endpoints only use PostgreSQL and show the adopted data organization:
 
 ![PostgreSQL1](readme_images/postgres1.png)
+<br>
+
 ![PostgreSQL2](readme_images/postgres2.png)
 
 <br>
 
 #### **FastAPI**
 
-    We decided to use FastAPI due to its speed and lightness, which is perfect for our small project. In FastAPI we connect to PostgreSQL and InfluxDB to provide structured data in the form of endpoints. You can check all enpoints on {ip_adress}/docs.
+    We decided to use FastAPI due to its speed and lightness, which is perfect for our small project.
+    In FastAPI we connect to PostgreSQL and InfluxDB to provide structured data in the form of endpoints.
+    You can check all enpoints on {ip_adress}/docs.
     Here is an example:
 
 ![FastAPI](readme_images/fastAPI.png)
