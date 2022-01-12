@@ -50,14 +50,6 @@
 
 <br>
 
-## **PostgreSQL Structure Diagram**
-
-<br>
-
-![Postgres Structure](readme_images/PostgreSQL.png)
-
-<br>
-
 ## **How it works? - Backend**
 
 <br>
@@ -93,10 +85,7 @@
     In addition, we structure them by, for example, giving them identification numbers, which help us to provide endpoints.
     These endpoints only use PostgreSQL and show the adopted data organization:
 
-![PostgreSQL1](readme_images/postgres1.png)
-<br>
-
-![PostgreSQL2](readme_images/postgres2.png)
+![Postgres Structure](readme_images/PostgreSQL.png)
 
 <br>
 
