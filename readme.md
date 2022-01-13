@@ -1,4 +1,4 @@
-# **PHT Wheather Checker - Backend**
+# **PHT Wheather Station - Backend**
 
 ## **General info**
 
