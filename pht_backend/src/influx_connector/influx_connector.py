@@ -41,6 +41,14 @@ class InfluxConnector:
         return results
 
     def get_city_data_from_date(self, city_id, year, month, day, hour, minutes):
+        if(month < 10):
+            month = "0" + str(month)
+        if(day < 10):
+            day = "0" + str(day)
+        if(hour < 10):
+            hour = "0" + str(hour)
+        if(minutes < 10):
+            minutes = "0" + str(minutes)
         query = f' from(bucket: "phtbucket")\
             |> range(start: {year}-{month}-{day}T{hour}:{minutes}:00Z, stop: {year}-{month}-{day}T{hour}:{minutes}:59Z)\
             |> filter(fn: (r) => r["_measurement"] == "city")\
