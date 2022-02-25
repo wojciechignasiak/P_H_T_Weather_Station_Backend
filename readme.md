@@ -4,8 +4,10 @@
 
 <br>
 
-    PHT is a project created by group of students. The project goal was to create a Service that will measure
-    temperature, air humidity and pollution in the cities of Częstochowa, Myszków and Krzepice
+    PHT is a project created by group of students. 
+    The project goal was to create a Service that will measure
+    temperature, air humidity and pollution in the 
+    cities of Częstochowa, Myszków and Krzepice
     located in Silesia in Poland.
 
 <br>
@@ -64,8 +66,10 @@
 
 #### **MQTT Bridge**
 
-    MQTT Bridge caches data with structure "pht/city/{city_id}/sensor/{sensor_id}, "sensor_data""
-    send by electronic sensors on {ip_adress}:1883 adress. Then MQTT breake the structure into InfluxDB topics:
+    MQTT Bridge caches data with 
+    structure "pht/city/{city_id}/sensor/{sensor_id}, "sensor_data""
+    send by electronic sensors on {ip_adress}:1883 adress. 
+    Then MQTT breake the structure into InfluxDB topics:
 
 ![MQTT](readme_images/mqttbridge.png)
 
@@ -73,7 +77,8 @@
 
 #### **InfluxDB**
 
-    MQTT correctly transfers data and topics structure to InfluxDB and by Explore tab we can see collected data:
+    MQTT correctly transfers data and topics structure to InfluxDB and by 
+    Explore tab we can see collected data:
 
 ![InfluxDB](readme_images/influxdb.png)
 
@@ -82,7 +87,8 @@
 #### **PostgreSQL**
 
     We use PostgreSQL to store the names of cities, sensors and units of measurement.
-    In addition, we structure them by, for example, giving them identification numbers, which help us to provide endpoints.
+    In addition, we structure them by, for example, giving them identification 
+    numbers, which help us to provide endpoints.
     These endpoints only use PostgreSQL and show the adopted data organization:
 
 ![Postgres Structure](readme_images/PostgreSQL.png)
@@ -91,8 +97,9 @@
 
 #### **FastAPI**
 
-    We decided to use FastAPI due to its speed and lightness, which is perfect for our small project.
-    In FastAPI we connect to PostgreSQL and InfluxDB to provide structured data in the form of endpoints.
+    We decided to use FastAPI due to its speed and lightness, which is 
+    perfect for our small project. In FastAPI we connect to PostgreSQL 
+    and InfluxDB to provide structured data in the form of endpoints.
     You can check all enpoints on {ip_adress}/docs.
     Here is an example:
 
