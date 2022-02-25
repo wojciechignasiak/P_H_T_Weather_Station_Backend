@@ -1,4 +1,4 @@
-# **PHT Wheather Station - Backend**
+# **PHT Weather Station - Backend**
 
 ## **General info**
 
