@@ -4,7 +4,7 @@
 
 <br>
 
-    PHT is a project created by group of students. 
+    PHT is a project created by group of students from the Częstochowa University of Technology. 
     The project goal was to create a Service that will measure
     temperature, air humidity and pollution in the 
     cities of Częstochowa, Myszków and Krzepice
