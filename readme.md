@@ -12,37 +12,21 @@
 
 <br>
 
-## **Setup - M1 Mac <img src="readme_images/appleicon.png" alt="Linux Icon" width="32"/>**
+## **Setup - Linux Ubuntu <img src="readme_images/linuxicon.png" alt="Linux Icon" width="32"/>**
+    
+        
+    1. Get to P_H_T_Weather_Station_Backend folder.
+    2. Start command:
 
-    1. Install:
-
-        Docker
-        Docker-compose
-
-    2. Open P_H_T_Project_Backend/pht_backend folder.
-    3. Open requirements.txt file and replace "psycopg2-binary" to just "psycopg2" and save changes.
-    2. Start Terminal.
-    3. Get to P_H_T_Project_Backend folder.
-    4. Start command:
-
+        sudo apt-get update
+        sudo ./install.sh
+    3. Reboot your desktop.
+    4. Get to P_H_T_Weather_Station_Backend  folder.
+    5. Start command:
+        
         ./build.sh
 
-    5. Done
-
-## **Setup - Linux Ubuntu <img src="readme_images/linuxicon.png" alt="Linux Icon" width="32"/>**
-
-    1. Install:
-
-        Docker
-        Docker-compose
-
-    2. Start Terminal
-    3. Get to P_H_T_Project_Backend folder.
-    4. Start command:
-
-        sudo ./build-linux.sh
-
-    5. Done
+    6. Done
 
 ## **Project Structure Diagram**
 
