@@ -3,7 +3,7 @@
 echo "++++++Building PHT project for the first time++++++"
 cp ./pht_backend/src/db_connector/models.py ./utils/models.py
 docker-compose up -d --build
-pip install -r ./utils
+pip install -r ./utils/requirements.txt
 echo "++++++Initializing Postgres DB++++++"
 sleep 30
 python3 ./utils/db_init.py
