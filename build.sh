@@ -16,4 +16,3 @@ echo "++++++Rebuilding necessary containers++++++"
 docker-compose up -d --build
 echo "++++++Building done check results by visiting++++++"
 echo "http://localhost:8000/docs"
-
