@@ -15,18 +15,13 @@
 ## **Setup - Linux Ubuntu <img src="readme_images/linuxicon.png" alt="Linux Icon" width="32"/>**
     
         
-    1. Get to P_H_T_Weather_Station_Backend folder.
-    2. Start command:
-
-        sudo apt-get update
-        sudo ./install.sh
-    3. Reboot your desktop.
-    4. Get to P_H_T_Weather_Station_Backend  folder.
-    5. Start command:
+    1. Open P_H_T_Weather_Station_Backend folder.
+    2. Install Docker-compose.
+    3. Start command:
         
         ./build.sh
 
-    6. Done
+    4. Done
 
 ## **Project Structure Diagram**
 
