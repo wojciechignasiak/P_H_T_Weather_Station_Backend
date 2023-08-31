@@ -56,15 +56,6 @@ class ReadingsRepository:
 
     async def get_readings_from_city_and_specific_date(self, city_id, year, month, day, hour, minutes):
         try:
-            hour = hour - 2
-            if(month < 10):
-                month = "0" + str(month)
-            if(day < 10):
-                day = "0" + str(day)
-            if(hour < 10):
-                hour = "0" + str(hour)
-            if(minutes < 10):
-                minutes = "0" + str(minutes)
             query = f'''
                 from(bucket: "{self._bucket}")
                 |> range(start: {year}-{month}-{day}T{hour}:{minutes}:00Z, stop: {year}-{month}-{day}T{hour}:{minutes}:59Z)
@@ -73,7 +64,6 @@ class ReadingsRepository:
                 |> last()
                 '''
             result: FluxTable = self._query_api.query(query=query)
-            print(result)
             if result:
                 results = {}
                 for table in result:
