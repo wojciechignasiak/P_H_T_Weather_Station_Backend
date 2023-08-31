@@ -37,7 +37,7 @@
 
 #### **Docker-compose**
 
-    Whole Backend layer has been built on Docker-compose containers technology:
+    Backend layer has been built on Docker-Compose containers technology:
 
 ![Docker-compose](readme_images/dockercompose.png)
 
@@ -45,7 +45,7 @@
 
 #### **MQTT Bridge**
 
-    MQTT Bridge caches data with 
+    MQTT Bridge receives data with 
     structure "pht/city/{city_id}/sensor/{sensor_id}, "sensor_data""
     send by electronic sensors on {ip_adress}:1883 adress. 
     Then MQTT breake the structure into InfluxDB topics:
@@ -98,7 +98,7 @@ Endpoint:
 
 Example request:
 
-**`http://178.43.161.159/cities`**
+**`http://localhost:8081/cities`**
 
 Example success response:
 
@@ -128,8 +128,7 @@ Example error response:
 
 ```json
 {
-  "error_code": "4040",
-  "error_message": "Internal server error"
+  "detail": "No cities in database."
 }
 ```
 
@@ -145,7 +144,7 @@ Endpoint:
 
 Example request:
 
-**`http://178.43.161.159/sensors`**
+**`http://localhost:8081/sensors`**
 
 Example success response:
 
@@ -154,17 +153,17 @@ Example success response:
   "sensors": [
     {
       "id": 1,
-      "sensor_name": "temperature",
-      "unit": "Celsius degrees"
+      "sensor_name": "Temperature",
+      "unit": "Celsius"
     },
     {
       "id": 2,
-      "sensor_name": "humidity",
-      "unit": "percent"
-    }
+      "sensor_name": "Humidity",
+      "unit": "Percentage"
+    },
     {
       "id": 3,
-      "sensor_name": "pollution",
+      "sensor_name": "Pollution",
       "unit": "PM2.5"
     }
   ]
@@ -175,8 +174,7 @@ Example error response:
 
 ```json
 {
-  "error_code": "4040",
-  "error_message": "Internal server error"
+  "detail": "No sensors in database."
 }
 ```
 
@@ -192,15 +190,15 @@ Endpoint:
 
 Example request:
 
-**`http://178.43.161.159/readings/1`**
+**`http://localhost:8081/readings/1`**
 
 Example success response:
 
 ```json
 {
-  "temperature": "20",
-  "humidity": "60",
-  "pollution": "10"
+  "Temperature": 21.37,
+  "Humidity": 60.17,
+  "Pollution": 80.37
 }
 ```
 
@@ -208,14 +206,13 @@ Example error response:
 
 ```json
 {
-  "error_code": "4041",
-  "error_message": "City does not exist"
+  "detail": "No measurements has been found."
 }
 ```
 
 <br><br>
 
-### **GET city exact sensor readings**
+### **GET city specific sensor readings**
 
 Endpoint:
 
@@ -225,13 +222,13 @@ Endpoint:
 
 Example request:
 
-**`http://178.43.161.159/readings/1/0`**
+**`http://localhost:8081/readings/1/0`**
 
 Example success response:
 
 ```json
 {
-  "humidity": "60"
+  "Humidity": 60.00
 }
 ```
 
@@ -239,8 +236,7 @@ Example error response:
 
 ```json
 {
-  "error_code": "4042",
-  "error_message": "Sensor does not exist"
+  "detail": "No measurements has been found."
 }
 ```
 
@@ -259,15 +255,15 @@ Endpoint:
 
 Example request:
 
-**`http://178.43.161.159/readings-date/1/2021-10-22T00:09:00Z`**
+**`http://localhost:8081/readings-date/1/2021-10-22T00:09:00Z`**
 
 Example success response:
 
 ```json
 {
-  "temperature": "20",
-  "humidity": "60",
-  "pollution": "10"
+  "Temperature": 21.37,
+  "Humidity": 60.00,
+  "Pollution": 25.17
 }
 ```
 
@@ -275,7 +271,6 @@ Example error response:
 
 ```json
 {
-  "error_code": "4043",
-  "error_message": "City does not exist or date has been given in wrong format"
+  "detail": "No measurements has been found."
 }
 ```

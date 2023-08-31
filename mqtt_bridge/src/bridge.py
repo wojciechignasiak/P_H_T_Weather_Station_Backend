@@ -6,12 +6,12 @@ import os
 class Bridge(mqtt.Client):
     def __init__(self):
         super().__init__()
-        print("MqttConnect init")
         self._influx_connector = InfluxConnector()
-        self._broker_url = os.environ.get("BROKER")
+        self._broker_url = os.environ.get("MQTT_BROKER_HOST")
+        self._broker_port = int(os.environ.get("MQTT_BROKER_PORT"))
 
     def run(self):
-        self.connect(self._broker_url, 1883)
+        self.connect(self._broker_url, self._broker_port)
         self.loop_forever()
 
     def on_connect(self, client, userdata, flags, rc):

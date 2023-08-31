@@ -1,13 +1,31 @@
+#pull official base image
+FROM python:3.11-alpine
 
-# 
-FROM python:3
+# set working directory
+WORKDIR /usr/src/pht_backend
 
-# 
-WORKDIR /src
-
-COPY requirements.txt /src/
-RUN pip install --no-cache-dir -r requirements.txt
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# install system dependencies
+RUN apk update \
+    && apk upgrade
+RUN apk add bash
+
+# install python dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
+# add app
+COPY . .
+
+# add entrypoint.sh
+COPY ./entrypoint.sh .
+RUN chmod a+x /usr/src/pht_backend/entrypoint.sh
+
+# run entrypoint.sh
+ENTRYPOINT ["sh", "/usr/src/pht_backend/entrypoint.sh"]
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]

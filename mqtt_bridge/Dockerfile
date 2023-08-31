@@ -1,9 +1,31 @@
-FROM python:3
+#pull official base image
+FROM python:3.11-alpine
 
-WORKDIR /src
+# set working directory
+WORKDIR /usr/src/mqtt_bridge
 
-COPY requirements.txt /src/
-RUN pip install --no-cache-dir -r requirements.txt
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-CMD [ "python", "./run.py" ]
+# install system dependencies
+RUN apk update \
+    && apk upgrade
+RUN apk add bash
+
+# install python dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
+# add app
+COPY . .
+
+# add entrypoint.sh
+COPY ./entrypoint.sh .
+RUN chmod a+x /usr/src/mqtt_bridge/entrypoint.sh
+
+# run entrypoint.sh
+ENTRYPOINT ["sh", "/usr/src/mqtt_bridge/entrypoint.sh"]
+
+CMD [ "python", "./src/run.py" ]

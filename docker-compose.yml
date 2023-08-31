@@ -1,94 +1,131 @@
-version: "3.9"
+version: '3'
 
 networks:
-  pht:
-    ipam:
-      config:
-        - subnet: 172.18.0.0/24
+  backend-network:
+    name: backend-network
+    driver: bridge
+
+volumes:
+  postgres-volume:
+  influx-volume:
+
 services:
-  db:
-    image: postgres:14.0
-    container_name: "Postgres_DB"
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: 1234
-    ports:
-      - "5432:5432"
-    networks:
-      pht:
-        ipv4_address: 172.18.0.2
+######################FastAPI SERVICES - Beginning###########################
 
-  influxdb:
-    image: influxdb:latest
-    container_name: "InfluxDB"
-    restart: always
-    volumes:
-      - influxdb2:/.influxdb2
-    ports:
-      - "8086:8086"
+  pht_backend:
+    container_name: pht_backend
+    build: ./pht_backend
+    image: ghcr.io/wojciechignasiak/pht_backend:0.0.1
     environment:
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: admin
-      DOCKER_INFLUXDB_INIT_PASSWORD: admin1234
-      DOCKER_INFLUXDB_INIT_ORG: pht
-      DOCKER_INFLUXDB_INIT_BUCKET: phtbucket
-    networks:
-      pht:
-        ipv4_address: 172.18.0.4
-
-  mqtt:
-    image: toke/mosquitto
-    container_name: "MQTT"
-    restart: always
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - INFLUX_HOST=${INFLUX_HOST}
+      - INFLUX_PORT=${INFLUX_PORT}
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - INFLUX_BUCKET_NAME=${INFLUX_BUCKET_NAME}
+      - INFLUX_ORG_NAME=${INFLUX_ORG_NAME}
     ports:
-      - "1883:1883"
+      - 8081:80
     expose:
-      - "1883"
+      - 80
     networks:
-      pht:
-        ipv4_address: 172.18.0.3
-
-  mqtt-bridge:
-    build: ./mqtt_bridge
-    container_name: "MQTT_Bridge"
+      - backend-network
     restart: always
-    command: python /src/run.py
     volumes:
-      - "./mqtt_bridge/src:/src"
+      - ./pht_backend:/usr/src/pht_backend/
+    depends_on:
+      - postgresql
+      - influxdb
+
+######################FastAPI SERVICES - End###########################
+
+######################Python SERVICES - Beginning###########################
+  mqtt_bridge:
+    build: ./mqtt_bridge
+    container_name: mqtt_bridge
+    restart: always
     environment:
-      BROKER: 172.18.0.3
-      DB: 172.18.0.4
-      TOKEN: ${INFLUX_TOKEN_ENV}
-      BUCKET_NAME: phtbucket
-      ORG: pht
+      - MQTT_BROKER_HOST=${MQTT_BROKER_HOST}
+      - MQTT_BROKER_PORT=${MQTT_BROKER_PORT}
+      - INFLUX_HOST=${INFLUX_HOST}
+      - INFLUX_PORT=${INFLUX_PORT}
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - INFLUX_BUCKET_NAME=${INFLUX_BUCKET_NAME}
+      - INFLUX_ORG_NAME=${INFLUX_ORG_NAME}
+    ports:
+      - 8082:80
+    expose:
+      - 80
+    networks:
+      - backend-network
+    volumes:
+      - ./mqtt_bridge:/usr/src/mqtt_bridge/
     depends_on:
       - mqtt
       - influxdb
-    networks:
-      pht:
-        ipv4_address: 172.18.0.5
 
-  core_api:
-    build: ./pht_backend
-    container_name: "CoreAPI"
+######################Python SERVICES - Beginning###########################
+
+######################MQTT SERVICES - Beginning###########################
+
+  mqtt:
+    image: toke/mosquitto
+    container_name: mqtt
     restart: always
-    depends_on:
-      - influxdb
-      - db
-    ports: 
-        - "8000:8000"
-    volumes:
-      - "./pht_backend/src:/src"
-    environment:
-      POSTGRES_LOGIN: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_URL: 172.18.0.2
-      INFLUX: 172.18.0.4
-      INFLUX_TOKEN: ${INFLUX_TOKEN_ENV}
-      BUCKET_NAME: phtbucket
-      ORG: pht
+    ports:
+      - 1883:1883
+    expose:
+      - 1883
     networks:
-      pht:
-        ipv4_address: 172.18.0.6     
-volumes:
-  influxdb2:
+      - backend-network
+
+######################MQTT SERVICES - End###########################
+
+######################PostgreSQL - Beginning###########################
+
+  postgresql:
+    container_name: postgresql
+    image: postgres:15.4-alpine
+    ports:
+      - 5433:5432
+    expose:
+      - 5432
+    networks:
+      - backend-network
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: always
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+      - "/etc/localtime:/etc/localtime:ro"
+
+######################PostgreSQL - End###########################
+
+######################InfluxDB - Beginning###########################
+
+  influxdb:
+      image: influxdb:2.7-alpine
+      container_name: influxdb
+      restart: always
+      volumes:
+        - influx-volume:/.influxdb2
+      ports:
+        - "8086:8086"
+      expose:
+        - 8086
+      networks:
+      - backend-network
+      environment:
+        - DOCKER_INFLUXDB_INIT_MODE=${INFLUX_INIT_MODE}
+        - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USERNAME}
+        - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD}
+        - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG_NAME}
+        - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET_NAME}
+        - TZ=${INFLUX_TIME_ZONE}
+
+######################InfluxDB - End###########################

@@ -8,7 +8,7 @@ base = declarative_base()
 city_m2m_sensor = Table('city_m2m_sensor', base.metadata,
                         Column('cities_id', Integer, ForeignKey('Cities.id')),
                         Column('sensors_id', Integer,
-                               ForeignKey('Sensors.id')),
+                        ForeignKey('Sensors.id')),
                         )
 
 
