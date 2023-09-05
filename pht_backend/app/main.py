@@ -8,6 +8,19 @@ from contextlib import asynccontextmanager
 from app.routers import (cities_router, readings_router, sensors_router)
 from app.utils.insert_postges_mock_data import insert_postgres_mock_data
 from app.utils.insert_influx_mock_data import insert_influx_mock_data
+from starlette.middleware.cors import CORSMiddleware
+from starlette import middleware
+
+
+middleware = [
+    middleware.Middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods="*",
+        allow_headers=["*"]
+    )]
+
 POSTGRES_USERNAME = os.environ.get("POSTGRES_USERNAME")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
@@ -54,7 +67,7 @@ async def lifespan(app: FastAPI):
 
 
 def create_application() -> FastAPI:
-    application = FastAPI(lifespan=lifespan, openapi_url="/openapi.json", docs_url="/docs")
+    application = FastAPI(lifespan=lifespan, openapi_url="/openapi.json", docs_url="/docs", middleware=middleware)
     application.include_router(cities_router.router, tags=["cities"])
     application.include_router(readings_router.router, tags=["readings"])
     application.include_router(sensors_router.router, tags=["sensors"])
