@@ -32,13 +32,9 @@ async def get_readings_from_specific_city(city_id: int,
                 result_dict[sensor.name] = city_readings[str(sensor.id)]
 
         return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(result_dict))
-    except InfluxNotFoundError as e:
+    except (InfluxNotFoundError, PostgreSQLNotFoundError) as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except InfluxDatabaseError as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    except PostgreSQLNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except PostgreSQLDatabaseError as e:
+    except (InfluxDatabaseError, PostgreSQLDatabaseError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
         print(f"Unspecified error occured: {e}")
@@ -64,13 +60,9 @@ async def get_specific_sensor_readings_from_specific_city(city_id: int,
                 result_dict[sensor.name] = city_readings[str(sensor.id)]
 
         return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(result_dict))
-    except InfluxNotFoundError as e:
+    except (InfluxNotFoundError, PostgreSQLNotFoundError) as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except InfluxDatabaseError as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    except PostgreSQLNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except PostgreSQLDatabaseError as e:
+    except (InfluxDatabaseError, PostgreSQLDatabaseError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
         print(f"Unspecified error occured: {e}")
@@ -86,7 +78,7 @@ async def get_readings_from_specific_city_and_date(city_id: int,
                                                     influx_client: InfluxDBClient = Depends(get_influx_client),
                                                     async_session: AsyncSession = Depends(get_session)):
     try:
-        datetime_dict = convert_datetime_for_influx(year, month, day, hour, minutes)
+        datetime_dict = await convert_datetime_for_influx(year, month, day, hour, minutes)
 
         readings_repository = ReadingsRepository(influx_client)
         city_readings = await readings_repository.get_readings_from_city_and_specific_date(city_id, datetime_dict["year"], datetime_dict["month"], datetime_dict["day"], datetime_dict["hour"], datetime_dict["minutes"])
@@ -100,13 +92,9 @@ async def get_readings_from_specific_city_and_date(city_id: int,
                 result_dict[sensor.name] = city_readings[str(sensor.id)]
 
         return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(result_dict))
-    except InfluxNotFoundError as e:
+    except (InfluxNotFoundError, PostgreSQLNotFoundError) as e:
         raise HTTPException(status_code=404, detail=str(e))
-    except InfluxDatabaseError as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    except PostgreSQLNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except PostgreSQLDatabaseError as e:
+    except (InfluxDatabaseError, PostgreSQLDatabaseError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
         print(f"Unspecified error occured: {e}")
